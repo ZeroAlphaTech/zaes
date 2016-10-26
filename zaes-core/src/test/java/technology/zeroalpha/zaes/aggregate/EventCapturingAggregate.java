@@ -20,25 +20,23 @@ package technology.zeroalpha.zaes.aggregate;
 
 import technology.zeroalpha.zaes.event.Event;
 
-import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Representation of a single domain object. Provides all business logic required to modify its state and perform
- * invariant checking, and raises resulting {@link Event}s. Can be recreated to any previous state by re-applying
- * {@link Event}s in order.
+ * Simple {@link Aggregate}, for use in testing, that collects all {@link Event}s that are passed to it.
  */
-public abstract class Aggregate {
+public class EventCapturingAggregate extends Aggregate {
 
-    /** Sequence number of last {@link Event} applied. */
-    private int sequenceNumber;
+    /** List of {@link Event}s received by the {@link Aggregate}. */
+    private final List<Event> capturedEvents = new ArrayList<>();
 
-    /** Timestamp of last {@link Event} applied. */
-    private ZonedDateTime lastModificationDate;
+    @Override
+    public void applyEvent(final Event event) {
+        capturedEvents.add(event);
+    }
 
-    /**
-     * Update the {@link Aggregate}'s state based on the given {@link Event}.
-     *
-     * @param event {@link Event} to apply
-     */
-    public abstract void applyEvent(final Event event);
+    public List<Event> getCapturedEvents() {
+        return capturedEvents;
+    }
 }

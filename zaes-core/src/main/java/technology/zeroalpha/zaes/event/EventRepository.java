@@ -19,20 +19,52 @@
 package technology.zeroalpha.zaes.event;
 
 import java.time.ZonedDateTime;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 /**
- * Created by chris on 05/10/16.
+ * A service providing access to an {@link Event} Stream.
  */
 public interface EventRepository {
 
+    /**
+     * Retrieve all {@link Event}s, in order, for the given Event Stream identifier.
+     *
+     * @param eventStreamId Identifier of stream
+     * @return Ordered list of {@link Event}s associated with identifier
+     */
     List<Event> retrieveEventStream(final String eventStreamId);
 
+    /**
+     * Retrieve {@link Event}s, in order, for the given Event Stream identifier, between if provided sequence numbers
+     * (inclusive).
+     *
+     * @param eventStreamId Identifier of stream
+     * @param startSequenceNumber First sequence number to retrieve
+     * @param endSequenceNumber Last sequence number to retrieve
+     * @return Ordered list of {@link Event}s associated with identifier
+     */
     List<Event> retrieveEventStream(
             final String eventStreamId, final int startSequenceNumber, final int endSequenceNumber);
 
+    /**
+     * Retrieve {@link Event}s, in order, for the given Event Stream identifier, between if provided date/times
+     * (inclusive).
+     *
+     * @param eventStreamId Identifier of stream
+     * @param startDate Start of time period
+     * @param endDate End of time period
+     * @return Ordered list of {@link Event}s associated with identifier
+     */
     List<Event> retrieveEventStream(
             final String eventStreamId, final ZonedDateTime startDate, final ZonedDateTime endDate);
 
-    void persistEvents(final String eventSreamId, final List<Event> events);
+    /**
+     * Persist the provided {@link Event}s to the Event Stream identified by the given identifier.
+     *
+     * @param eventStreamId Identifier of stream
+     * @param events {@link Event}s to append
+     * @throws ConcurrentModificationException If Event Stream has been modified since client last read it
+     */
+    void persistEvents(final String eventStreamId, final List<Event> events) throws ConcurrentModificationException;
 }

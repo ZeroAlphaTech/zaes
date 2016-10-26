@@ -1,34 +1,56 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>technology.zeroalpha</groupId>
-    <artifactId>zaes</artifactId>
+
+    <parent>
+        <groupId>technology.zeroalpha</groupId>
+        <artifactId>zaes</artifactId>
+        <version>0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>zaes-core</artifactId>
+
     <packaging>jar</packaging>
     <version>0.1-SNAPSHOT</version>
-    <name>zaes</name>
 
-    <properties>
-        <junit.version>4.12</junit.version>
-        <mockito.version>1.10.19</mockito.version>
-        <assertj.version>3.5.2</assertj.version>
-    </properties>
+    <name>zaes Core</name>
+    <description>Core components of the zaes framework</description>
+
+    <developers>
+        <developer>
+            <email>chris@zeroalpha.technology</email>
+            <name>Chris Rowe</name>
+            <url>https://github.com/cjrowe</url>
+            <id>cjrowe</id>
+        </developer>
+    </developers>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>${assertj.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

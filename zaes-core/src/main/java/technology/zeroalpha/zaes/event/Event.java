@@ -18,10 +18,24 @@
  */
 package technology.zeroalpha.zaes.event;
 
+import java.time.ZonedDateTime;
+
 /**
- * Created by chris on 02/10/16.
+ * Base representation of an Event in the system.
  */
 public abstract class Event {
 
+    /** Sequence number of event in stream. */
     private int sequenceNumber;
+
+    /** Timestamp of when Event is deemed to have occurred. */
+    private ZonedDateTime eventTimestamp;
+
+    public int getSequenceNumber() {
+        return sequenceNumber;
+    }
+
+    public ZonedDateTime getEventTimestamp() {
+        return eventTimestamp;
+    }
 }

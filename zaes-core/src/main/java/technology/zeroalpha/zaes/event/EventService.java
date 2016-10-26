@@ -25,64 +25,129 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Created by chris on 05/10/16.
+ * Service used to retrieve {@link Event} Streams from the underlying {@link EventRepository}.
  */
 public class EventService {
 
+    /** {@link EventRepository} implementation for retrieving {@link Event}s from the underlying store. */
     private final EventRepository eventRepository;
 
+    /**
+     * @param eventRepository Service offering access to underlying {@link Event} data store
+     */
     public EventService(final EventRepository eventRepository) {
         this.eventRepository = eventRepository;
     }
 
-    public List<Event> retrieveAllEvents(final String streamId) {
-        if(Optional.ofNullable(streamId).isPresent()) {
-            final List<Event> eventStream = eventRepository.retrieveEventStream(streamId);
-
-            if (eventStream != null) {
-                return eventStream;
-            }
+    /**
+     * Retrieve all {@link Event}s, in order, associated with the provided Event Stream identifier.
+     *
+     * @param eventStreamId Identifier of Event Stream
+     * @return Ordered list of {@link Event}s
+     */
+    public List<Event> retrieveAllEvents(final String eventStreamId) {
+        if(Optional.ofNullable(eventStreamId).isPresent()) {
+            return Optional
+                    .ofNullable(eventRepository.retrieveEventStream(eventStreamId))
+                    .orElseGet(Collections::emptyList);
         }
 
         return Collections.emptyList();
     }
 
-    public List<Event> retrieveEventsToSequenceNumber(final String streamId, final int sequenceNumber) {
-        return retrieveEventsBetweenSequenceNumbers(streamId, Integer.MIN_VALUE, sequenceNumber);
+    /**
+     * Retrieve all {@link Event}s, in order, associated with the provided Event Stream identifier, up to the given
+     * sequence number (inclusive).
+     *
+     * @param eventStreamId Identifier of Event Stream
+     * @param sequenceNumber Sequence number to retrieve events to
+     * @return Ordered list of {@link Event}s
+     */
+    public List<Event> retrieveEventsToSequenceNumber(final String eventStreamId, final int sequenceNumber) {
+        return retrieveEventsBetweenSequenceNumbers(eventStreamId, Integer.MIN_VALUE, sequenceNumber);
     }
 
-    public List<Event> retrieveEventsFromSequenceNumber(final String streamId, final int sequenceNumber) {
-        return retrieveEventsBetweenSequenceNumbers(streamId, sequenceNumber, Integer.MAX_VALUE);
+    /**
+     * Retrieve all {@link Event}s, in order, associated with the provided Event Stream identifier, starting at the
+     * given sequence number (inclusive).
+     *
+     * @param eventStreamId Identifier of Event Stream
+     * @param sequenceNumber Sequence number to retrieve events from
+     * @return Ordered list of {@link Event}s
+     */
+    public List<Event> retrieveEventsFromSequenceNumber(final String eventStreamId, final int sequenceNumber) {
+        return retrieveEventsBetweenSequenceNumbers(eventStreamId, sequenceNumber, Integer.MAX_VALUE);
     }
 
+    /**
+     * Retrieve all {@link Event}s, in order, associated with the provided Event Stream identifier, between the two
+     * given sequence numbers (inclusive).
+     *
+     * @param eventStreamId Identifier of Event Stream
+     * @param startSequenceNumber Sequence number to retrieve events from
+     * @param endSequenceNumber Sequence number to retrieve events to
+     * @return Ordered list of {@link Event}s
+     */
     public List<Event> retrieveEventsBetweenSequenceNumbers(
-            final String streamId, final int startSequenceNumber, final int endSequenceNumber) {
-        if(Optional.ofNullable(streamId).isPresent()) {
-            final List<Event> eventStream =
-                    eventRepository.retrieveEventStream(streamId, startSequenceNumber, endSequenceNumber);
-
-            if (eventStream != null) {
-                return eventStream;
-            }
+            final String eventStreamId, final int startSequenceNumber, final int endSequenceNumber) {
+        if(Optional.ofNullable(eventStreamId).isPresent()) {
+            return Optional
+                    .ofNullable(
+                            eventRepository.retrieveEventStream(eventStreamId, startSequenceNumber, endSequenceNumber))
+                    .orElseGet(Collections::emptyList);
         }
 
         return Collections.emptyList();
     }
 
-    public List<Event> retrieveEventsToDate(final String streamId, final ZonedDateTime dateTime) {
+    /**
+     * Retrieve all {@link Event}s, in order, associated with the provided Event Stream identifier, up to the given
+     * date/time (inclusive).
+     *
+     * @param eventStreamId Identifier of Event Stream
+     * @param dateTime Date/time to retrieve {@link Event}s up to
+     * @return Ordered list of {@link Event}s
+     */
+    public List<Event> retrieveEventsToDate(final String eventStreamId, final ZonedDateTime dateTime) {
         return Collections.emptyList();
     }
 
-    public List<Event> retrieveEventsAfterDate(final String streamId, final ZonedDateTime dateTime) {
+    /**
+     * Retrieve all {@link Event}s, in order, associated with the provided Event Stream identifier, from the given
+     * date/time onwards (inclusive).
+     *
+     * @param eventStreamId Identifier of Event Stream
+     * @param dateTime Date/time to retrieve {@link Event}s from
+     * @return Ordered list of {@link Event}s
+     */
+    public List<Event> retrieveEventsFromDate(final String eventStreamId, final ZonedDateTime dateTime) {
         return Collections.emptyList();
     }
 
+    /**
+     * Retrieve all {@link Event}s, in order, associated with the provided Event Stream identifier, between the two
+     * given date/times (inclusive).
+     *
+     * @param eventStreamId Identifier of Event Stream
+     * @param startDateTime Date/time to retrieve {@link Event}s from
+     * @param endDateTime Date/time to retrieve {@link Event}s to
+     * @return Ordered list of {@link Event}s
+     */
     public List<Event> retrieveEventsBetweenDates(
-            final String streamId, final ZonedDateTime startDateTime, final ZonedDateTime endDateTime) {
+            final String eventStreamId, final ZonedDateTime startDateTime, final ZonedDateTime endDateTime) {
         return Collections.emptyList();
     }
 
-    public void publishEvents(final String streamId, final int lastSeenSequenceNumber, List<Event> events)
+    /**
+     * Publish the given List of {@link Event}s to the Event Stream.
+     *
+     * @param eventStreamId Identifier of Event Stream
+     * @param lastSeenSequenceNumber Last sequence number that was observed for this Stream
+     * @param unpublishedEvents {@link Event}s to publish
+     * @throws ConcurrentModificationException If Event Stream has been modified since we last read it
+     */
+    public void publishEvents(
+            final String eventStreamId, final int lastSeenSequenceNumber, final List<Event> unpublishedEvents)
             throws ConcurrentModificationException {
 
     }

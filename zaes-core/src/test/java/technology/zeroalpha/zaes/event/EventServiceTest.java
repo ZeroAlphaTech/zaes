@@ -28,30 +28,38 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
-
 /**
  * Unit tests to ensure the correct operation of {@link EventService}.
  */
 @RunWith(MockitoJUnitRunner.class)
 public class EventServiceTest {
 
+    /** Identifier of event stream to use in tests. */
     private static final String EVENT_STREAM_ID = UUID.randomUUID().toString();
 
+    /** Mocked {@link EventRepository}. */
     @Mock
     private EventRepository mockEventRepository;
 
+    /** Instance of {@link EventService} to test. */
     private EventService serviceUnderTest;
 
+    /**
+     * Populate service being tested with its dependencies.
+     */
     @Before
     public void configureServiceBeingTested() {
         this.serviceUnderTest = new EventService(mockEventRepository);
     }
 
+    /**
+     * Ensure that calls to {@link EventService#retrieveAllEvents(String)} delegate correctly to
+     * {@link EventRepository}, and return the received Event Stream.
+     */
     @Test
     public void retrieveAllEvents_correctly_delegates_to_repository() {
         // Given
@@ -64,19 +72,27 @@ public class EventServiceTest {
         final List<Event> eventStream = serviceUnderTest.retrieveAllEvents(EVENT_STREAM_ID);
 
         // Then
-        assertSame(mockEventStream, eventStream);
+        assertThat(eventStream).isSameAs(mockEventStream);
     }
 
+    /**
+     * Ensure that calls to {@link EventService#retrieveAllEvents(String)} return an empty collection if provided stream
+     * id is null.
+     */
     @Test
     public void retrieveAllEvents_returns_empty_collection_if_stream_id_is_null() {
         // When
         final List<Event> eventStream = serviceUnderTest.retrieveAllEvents(null);
 
         // Then
-        assertNotNull(eventStream);
-        assertTrue(eventStream.isEmpty());
+        verifyZeroInteractions(mockEventRepository);
+        assertThat(eventStream).isNotNull().isEmpty();
     }
 
+    /**
+     * Ensure that calls to {@link EventService#retrieveAllEvents(String)} return an empty collection if delegated call
+     * to {@link EventRepository} returns null.
+     */
     @Test
     public void retrieveAllEvents_returns_empty_collection_if_repository_returns_null() {
         // Given
@@ -86,10 +102,13 @@ public class EventServiceTest {
         final List<Event> eventStream = serviceUnderTest.retrieveAllEvents(EVENT_STREAM_ID);
 
         // Then
-        assertNotNull(eventStream);
-        assertTrue(eventStream.isEmpty());
+        assertThat(eventStream).isNotNull().isEmpty();
     }
 
+    /**
+     * Ensure that calls to {@link EventService#retrieveEventsToSequenceNumber(String, int)} delegate correctly to
+     * {@link EventRepository}, and return the received Event Stream.
+     */
     @Test
     public void retrieveEventsToSequenceNumber_correctly_delegates_to_repository() {
         // Given
@@ -106,9 +125,13 @@ public class EventServiceTest {
                 serviceUnderTest.retrieveEventsToSequenceNumber(EVENT_STREAM_ID, sequenceNumber);
 
         // Then
-        assertSame(mockEventStream, eventStream);
+        assertThat(eventStream).isSameAs(mockEventStream);
     }
 
+    /**
+     * Ensure that calls to {@link EventService#retrieveEventsToSequenceNumber(String, int)} return an empty collection
+     * if provided stream id is null.
+     */
     @Test
     public void retrieveEventsToSequenceNumber_returns_empty_collection_if_stream_id_is_null() {
         // Given
@@ -118,10 +141,13 @@ public class EventServiceTest {
         final List<Event> eventStream = serviceUnderTest.retrieveEventsToSequenceNumber(null, sequenceNumber);
 
         // Then
-        assertNotNull(eventStream);
-        assertTrue(eventStream.isEmpty());
+        assertThat(eventStream).isNotNull().isEmpty();
     }
 
+    /**
+     * Ensure that calls to {@link EventService#retrieveEventsToSequenceNumber(String, int)} return an empty collection
+     * if delegated call to {@link EventRepository} returns null.
+     */
     @Test
     public void retrieveEventsToSequenceNumber_returns_empty_collection_if_repository_returns_null() {
         // Given
@@ -134,10 +160,13 @@ public class EventServiceTest {
                 serviceUnderTest.retrieveEventsToSequenceNumber(EVENT_STREAM_ID, sequenceNumber);
 
         // Then
-        assertNotNull(eventStream);
-        assertTrue(eventStream.isEmpty());
+        assertThat(eventStream).isNotNull().isEmpty();
     }
 
+    /**
+     * Ensure that calls to {@link EventService#retrieveEventsFromSequenceNumber(String, int)} delegate correctly to
+     * {@link EventRepository}, and return the received Event Stream.
+     */
     @Test
     public void retrieveEventsFromSequenceNumber_correctly_delegates_to_repository() {
         // Given
@@ -154,9 +183,13 @@ public class EventServiceTest {
                 serviceUnderTest.retrieveEventsFromSequenceNumber(EVENT_STREAM_ID, sequenceNumber);
 
         // Then
-        assertSame(mockEventStream, eventStream);
+        assertThat(eventStream).isSameAs(mockEventStream);
     }
 
+    /**
+     * Ensure that calls to {@link EventService#retrieveEventsFromSequenceNumber(String, int)} return an empty
+     * collection if provided stream id is null.
+     */
     @Test
     public void retrieveEventsFromSequenceNumber_returns_empty_collection_if_stream_id_is_null() {
         // Given
@@ -166,10 +199,13 @@ public class EventServiceTest {
         final List<Event> eventStream = serviceUnderTest.retrieveEventsFromSequenceNumber(null, sequenceNumber);
 
         // Then
-        assertNotNull(eventStream);
-        assertTrue(eventStream.isEmpty());
+        assertThat(eventStream).isNotNull().isEmpty();
     }
 
+    /**
+     * Ensure that calls to {@link EventService#retrieveEventsFromSequenceNumber(String, int)} return an empty
+     * collection if delegated call to {@link EventRepository} returns null.
+     */
     @Test
     public void retrieveEventsFromSequenceNumber_returns_empty_collection_if_repository_returns_null() {
         // Given
@@ -183,7 +219,6 @@ public class EventServiceTest {
                 serviceUnderTest.retrieveEventsFromSequenceNumber(EVENT_STREAM_ID, sequenceNumber);
 
         // Then
-        assertNotNull(eventStream);
-        assertTrue(eventStream.isEmpty());
+        assertThat(eventStream).isNotNull().isEmpty();
     }
 }
