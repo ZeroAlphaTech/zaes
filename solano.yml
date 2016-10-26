@@ -4,3 +4,9 @@ java:
 
 tests:
   - mvn test
+
+cache:
+  key_paths:
+  - pom.xml
+  save_paths:
+  - HOME/.m2
