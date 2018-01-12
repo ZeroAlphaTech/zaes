@@ -16,27 +16,12 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package technology.zeroalpha.zaes.aggregate;
+package technology.zeroalpha.zaes.core.listener;
 
-import technology.zeroalpha.zaes.event.Event;
+import technology.zeroalpha.zaes.core.event.Event;
 
-import java.util.ArrayList;
-import java.util.List;
+@FunctionalInterface
+public interface EventListener<E extends Event> {
 
-/**
- * Simple {@link Aggregate}, for use in testing, that collects all {@link Event}s that are passed to it.
- */
-public class EventCapturingAggregate extends Aggregate {
-
-    /** List of {@link Event}s received by the {@link Aggregate}. */
-    private final List<Event> capturedEvents = new ArrayList<>();
-
-    @Override
-    public void applyEvent(final Event event) {
-        capturedEvents.add(event);
-    }
-
-    public List<Event> getCapturedEvents() {
-        return capturedEvents;
-    }
+    void process(final E event);
 }

@@ -16,10 +16,10 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package technology.zeroalpha.zaes.aggregate;
+package technology.zeroalpha.zaes.core.aggregate;
 
-import technology.zeroalpha.zaes.event.Event;
-import technology.zeroalpha.zaes.event.EventService;
+import technology.zeroalpha.zaes.core.event.Event;
+import technology.zeroalpha.zaes.core.event.EventService;
 
 import java.time.ZonedDateTime;
 import java.util.List;

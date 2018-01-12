@@ -16,29 +16,26 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package technology.zeroalpha.zaes.aggregate;
-
-import technology.zeroalpha.zaes.event.Event;
+package technology.zeroalpha.zaes.core.event;
 
 import java.time.ZonedDateTime;
 
 /**
- * Representation of a single domain object. Provides all business logic required to modify its state and perform
- * invariant checking, and raises resulting {@link Event}s. Can be recreated to any previous state by re-applying
- * {@link Event}s in order.
+ * Base representation of an Event in the system.
  */
-public abstract class Aggregate {
+public abstract class Event {
 
-    /** Sequence number of last {@link Event} applied. */
+    /** Sequence number of event in stream. */
     private int sequenceNumber;
 
-    /** Timestamp of last {@link Event} applied. */
-    private ZonedDateTime lastModificationDate;
+    /** Timestamp of when Event is deemed to have occurred. */
+    private ZonedDateTime eventTimestamp;
 
-    /**
-     * Update the {@link Aggregate}'s state based on the given {@link Event}.
-     *
-     * @param event {@link Event} to apply
-     */
-    public abstract void applyEvent(final Event event);
+    public int getSequenceNumber() {
+        return sequenceNumber;
+    }
+
+    public ZonedDateTime getEventTimestamp() {
+        return eventTimestamp;
+    }
 }

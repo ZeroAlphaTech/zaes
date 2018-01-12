@@ -16,26 +16,27 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package technology.zeroalpha.zaes.event;
+package technology.zeroalpha.zaes.core.aggregate;
 
-import java.time.ZonedDateTime;
+import technology.zeroalpha.zaes.core.event.Event;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Base representation of an Event in the system.
+ * Simple {@link Aggregate}, for use in testing, that collects all {@link Event}s that are passed to it.
  */
-public abstract class Event {
+public class EventCapturingAggregate extends Aggregate {
 
-    /** Sequence number of event in stream. */
-    private int sequenceNumber;
+    /** List of {@link Event}s received by the {@link Aggregate}. */
+    private final List<Event> capturedEvents = new ArrayList<>();
 
-    /** Timestamp of when Event is deemed to have occurred. */
-    private ZonedDateTime eventTimestamp;
-
-    public int getSequenceNumber() {
-        return sequenceNumber;
+    @Override
+    public void applyEvent(final Event event) {
+        capturedEvents.add(event);
     }
 
-    public ZonedDateTime getEventTimestamp() {
-        return eventTimestamp;
+    public List<Event> getCapturedEvents() {
+        return capturedEvents;
     }
 }
