@@ -12,6 +12,7 @@
 hs_err_pid*
 
 # IntelliJ Files
+.idea/
 *.iml
 *.ipr
 *.iws
