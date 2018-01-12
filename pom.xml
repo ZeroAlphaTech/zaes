@@ -72,5 +72,6 @@
 
     <modules>
         <module>zaes-core</module>
+        <module>zaes-cqrs</module>
     </modules>
 </project>
