@@ -14,7 +14,7 @@
     <packaging>jar</packaging>
     <version>0.1-SNAPSHOT</version>
 
-    <name>zaes CQRS</name>
+    <name>0A Event Sourcing Framework - CQRS Module</name>
     <description>CQRS framework built on top of the zaes framework</description>
 
     <developers>
