@@ -19,10 +19,7 @@
 package technology.zeroalpha.zaes.core.event;
 
 import java.time.ZonedDateTime;
-import java.util.Collections;
-import java.util.ConcurrentModificationException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Service used to retrieve {@link Event} Streams from the underlying {@link EventRepository}.
@@ -42,17 +39,14 @@ public class EventService {
     /**
      * Retrieve all {@link Event}s, in order, associated with the provided Event Stream identifier.
      *
-     * @param eventStreamId Identifier of Event Stream
+     * @param aggregateIdentifier Identifier of Event Stream
      * @return Ordered list of {@link Event}s
      */
-    public List<Event> retrieveAllEvents(final String eventStreamId) {
-        if(Optional.ofNullable(eventStreamId).isPresent()) {
-            return Optional
-                    .ofNullable(eventRepository.retrieveEventStream(eventStreamId))
-                    .orElseGet(Collections::emptyList);
-        }
+    public List<Event> retrieveAllEvents(final String aggregateIdentifier) {
+        Objects.requireNonNull(aggregateIdentifier);
 
-        return Collections.emptyList();
+        final List<Event> events = eventRepository.retrieveEventStream(aggregateIdentifier);
+        return events == null ? Collections.emptyList() : events;
     }
 
     /**

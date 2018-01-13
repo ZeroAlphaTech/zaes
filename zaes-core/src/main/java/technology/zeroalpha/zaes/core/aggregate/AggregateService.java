@@ -33,6 +33,8 @@ public class AggregateService<A extends Aggregate> {
     /** The {@link Class) of the {@link Aggregate}s that will be managed by this instance of the service. */
     private final Class<A> aggregateClass;
 
+    private final AggregateIdentifierGenerator aggregateIdentifierGenerator;
+
     /** Instance of an {@link EventService}, used to retrieve {@link Event}s associated with the given aggregate. */
     private final EventService eventService;
 
@@ -40,9 +42,20 @@ public class AggregateService<A extends Aggregate> {
      * @param aggregateClass Class of {@link Aggregate}s to manage
      * @param eventService Service for retrieving {@link Event}s
      */
-    public AggregateService(final Class<A> aggregateClass, final EventService eventService) {
+    public AggregateService(
+            final Class<A> aggregateClass,
+            final AggregateIdentifierGenerator aggregateIdentifierGenerator,
+            final EventService eventService) {
         this.aggregateClass = aggregateClass;
+        this.aggregateIdentifierGenerator = aggregateIdentifierGenerator;
         this.eventService = eventService;
+    }
+
+    public A createNewAggregate() {
+        final A aggregate = createInstance();
+        aggregate.setAggregateIdentifier(aggregateIdentifierGenerator.generateNewIdentifier());
+
+        return aggregate;
     }
 
     /**

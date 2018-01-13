@@ -20,8 +20,11 @@ package technology.zeroalpha.zaes.cqrs.command;
 
 import technology.zeroalpha.zaes.core.aggregate.Aggregate;
 import technology.zeroalpha.zaes.core.aggregate.AggregateService;
+import technology.zeroalpha.zaes.core.event.Event;
 
-public abstract class CommandProcessor<A extends Aggregate> {
+import java.util.List;
+
+public abstract class CommandProcessor<A extends Aggregate, C extends Command<A>> {
 
     private final AggregateService<A> aggregateService;
 
@@ -29,10 +32,15 @@ public abstract class CommandProcessor<A extends Aggregate> {
         this.aggregateService = aggregateService;
     }
 
-    public void process(final Command<A> command) {
-        A aggregate = aggregateService.buildLatestAggregate(command.getAggregateIdentifier());
+    public void process(final C command) {
+        final A aggregate = aggregateService.createNewAggregate();
         processCommand(aggregate, command);
     }
 
-    abstract void processCommand(final A aggregate, final Command<A> command);
+    public void process(final String aggregateIdentifier, final C command) {
+        final A aggregate = aggregateService.buildLatestAggregate(aggregateIdentifier);
+        processCommand(aggregate, command);
+    }
+
+    protected abstract List<Event> processCommand(final A aggregate, final C command);
 }

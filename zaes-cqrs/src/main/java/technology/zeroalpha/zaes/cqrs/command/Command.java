@@ -22,13 +22,5 @@ import technology.zeroalpha.zaes.core.aggregate.Aggregate;
 
 public abstract class Command<A extends Aggregate> {
 
-    private final String aggregateIdentifier;
 
-    public Command(String aggregateIdentifier) {
-        this.aggregateIdentifier = aggregateIdentifier;
-    }
-
-    public String getAggregateIdentifier() {
-        return aggregateIdentifier;
-    }
 }

@@ -29,11 +29,17 @@ import java.time.ZonedDateTime;
  */
 public abstract class Aggregate {
 
+    private String aggregateIdentifier;
+
     /** Sequence number of last {@link Event} applied. */
     private int sequenceNumber;
 
     /** Timestamp of last {@link Event} applied. */
     private ZonedDateTime lastModificationDate;
+
+    public final void setAggregateIdentifier(final String aggregateIdentifier) {
+        this.aggregateIdentifier = aggregateIdentifier;
+    }
 
     /**
      * Update the {@link Aggregate}'s state based on the given {@link Event}.
