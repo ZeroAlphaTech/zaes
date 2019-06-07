@@ -46,5 +46,10 @@ public abstract class Aggregate {
      *
      * @param event {@link Event} to apply
      */
-    public abstract void applyEvent(final Event event);
+    public void applyEvent(final Event event) {
+        this.sequenceNumber = event.getSequenceNumber();
+        processEvent(event);
+    }
+
+    protected abstract void processEvent(final Event event);
 }
